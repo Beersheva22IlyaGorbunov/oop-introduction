@@ -2,9 +2,9 @@ package telran.shapes;
 
 public class Rectangle {
 	private static final String SYMBOL = "*";
-	protected int width;
-	protected int height;
-	protected static String symbol = SYMBOL;
+	private int width;
+	private int height;
+	private static String symbol = SYMBOL;
 
 	public Rectangle(int width, int height) {
 		this.width = width;

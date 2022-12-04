@@ -10,7 +10,7 @@ public class SquareTriangle extends Square {
 	}
 	
 	public String[] presentation(int offset) {
-		String[] res = new String[width];
+		String[] res = new String[getWidth()];
 		addTopCorner(res, offset);
 		res[res.length - 1] = getLine(offset);
 		return res;
@@ -18,13 +18,14 @@ public class SquareTriangle extends Square {
 
 	private void addTopCorner(String[] res, int offset) {
 		int rightBorder = res.length - 1;
+		char symbol = getSymbol().charAt(0);
+		int sidePos = isLeftDiagonal ? 0 : rightBorder;
 		for (int i = 0; i < rightBorder; i++) {
-			char[] line = new char[width + offset];
+			char[] line = new char[getWidth() + offset];
 			Arrays.fill(line, ' ');
 			int diagPos = isLeftDiagonal ? i : rightBorder - i;
-			int sidePos = isLeftDiagonal ? 0 : rightBorder;
-			line[diagPos + offset] = symbol.charAt(0);
-			line[sidePos + offset] = symbol.charAt(0);
+			line[diagPos + offset] = symbol;
+			line[sidePos + offset] = symbol;
 			res[i] = String.valueOf(line);
 		}
 	}
