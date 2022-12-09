@@ -40,23 +40,25 @@ public class BaseCipher {
 	}
 	
 	public String cipher(int number) {
-		int alphabetLength = key.length();
-		String reversedNumber = "";
+		return number > 0 ? getCipheredNumber(number) : String.valueOf(key.charAt(0));
+	}
+	
+	private String getCipheredNumber(int number) {
+		int digitsQuantity = digitsQuantity(number);
+		char[] resArr = new char[digitsQuantity];
+		int index = resArr.length - 1;
 		do {
 			char symbol = key.charAt(number % alphabetLength);
 			number /= alphabetLength;
-			reversedNumber += symbol;
+			resArr[index] = symbol;
+			index--;
 		} while (number > 0);
-
-		return reverseString(reversedNumber);
+		return resArr.toString();
 	}
 	
-	private String reverseString(String string) {
-		String res = "";
-		for (int i = string.length() - 1; i > -1 ; i--) {
-			res += string.charAt(i);
-		}
-		return res;
+	private int digitsQuantity(int number) {
+		
+	    return (int) Math.floor(Math.log(number) / Math.log(alphabetLength)) + 1;
 	}
 	
 	public int decipher(String cipher) {
