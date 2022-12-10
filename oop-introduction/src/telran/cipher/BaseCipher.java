@@ -4,6 +4,7 @@ public class BaseCipher {
 	private static final char CHAR_MAX = 126;
 	private static final char CHAR_MIN = 33;
 	public String key;
+	public int[] keyHelper;
 	private int alphabetLength;
 	
 	public BaseCipher(int length) {
@@ -14,9 +15,10 @@ public class BaseCipher {
 		}
 		
 		this.key = generateKey(length);
+		this.keyHelper = generateHepler();
 		this.alphabetLength = length;
 	}
-	
+
 	private String generateKey(int length) {
 		boolean[] usedSymbols = new boolean[CHAR_MAX - CHAR_MIN + 1];
 		String key = "";
@@ -33,6 +35,15 @@ public class BaseCipher {
 			}
 		}
 		return key;
+	}
+	
+	private int[] generateHepler() {
+		int length = CHAR_MAX - CHAR_MIN + 1;
+		int[] helper = new int[length];
+		for (int i = 0; i < alphabetLength; i++) {
+			helper[key.charAt(i) - CHAR_MIN] = i;
+		}
+		return helper;
 	}
 	
 	private char generateRandomSymbol(char min, char max) {
@@ -74,7 +85,12 @@ public class BaseCipher {
 		}
 		return number;
 	}
-	
+	/**
+	 * 
+	 * @param cipher
+	 * @return true if cipher length non zero 
+	 * 		   and each element exists in alphabet
+	 */
 	private boolean cipherIsValid(String cipher) {
 		boolean res = true;
 		for (int i = 0; i < cipher.length(); i++) {
@@ -82,11 +98,11 @@ public class BaseCipher {
 				res = false;
 			}
 		}
-		return res;
+		return cipher.length() > 0 && res;
 	}
 	
 	private int getNumberFromKey(char symbol) {
-		return key.indexOf(symbol);
+		return key.charAt(keyHelper[symbol - CHAR_MIN]);
 	}
 	/**
 	 * 
