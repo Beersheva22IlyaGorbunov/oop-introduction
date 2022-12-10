@@ -10,9 +10,9 @@ class BaseChiperTest {
 	@Test
 	void BaseCipherRandomTests() {
 		System.out.println("\n*******   BaseCipherRandomTests   *******\n");
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 150000; i++) {
 			int alphabetLength = (int) (Math.random() * (126 - 33 + 1));
-			int randomInt = (int) (Math.random() * (100000));
+			int randomInt = (int) (Math.random() * (100000000));
 			BaseCipher newCipher = new BaseCipher(alphabetLength);
 			System.out.println(String.format("Length of alphabet: %s; Random number: %s", alphabetLength, randomInt));
 			System.out.println(String.format("Generated key: %s", newCipher.key));
@@ -21,8 +21,9 @@ class BaseChiperTest {
 			int deciphered = newCipher.decipher(ciphered);
 			System.out.println(deciphered);
 			System.out.println();
+			assertEquals(randomInt, deciphered);
 		}
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 150000; i++) {
 			int alphabetLength = (int) (Math.random() * (126 - 33 + 1));
 			int randomInt = (int) (Math.random() * (100));
 			BaseCipher newCipher = new BaseCipher(alphabetLength);
@@ -33,6 +34,7 @@ class BaseChiperTest {
 			int deciphered = newCipher.decipher(ciphered);
 			System.out.println(deciphered);
 			System.out.println();
+			assertEquals(randomInt, deciphered);
 		}
 	}
 	

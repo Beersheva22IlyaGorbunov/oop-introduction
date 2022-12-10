@@ -6,7 +6,6 @@ public class BaseCipher {
 	private static final char CHAR_MAX = 126;
 	private static final char CHAR_MIN = 33;
 	public String key;
-	public int[] keyHelper = new int[CHAR_MAX - CHAR_MIN + 1];
 	private int alphabetLength;
 	
 	public BaseCipher(int length) {
@@ -16,19 +15,19 @@ public class BaseCipher {
 			length = 94;
 		}
 		
-		Arrays.fill(keyHelper, -1);
 		this.key = generateKey(length);
 		this.alphabetLength = length;
 	}
 
 	private String generateKey(int length) {
+		boolean[] usedSymbols = new boolean[CHAR_MAX - CHAR_MIN + 1];
 		String key = "";
 		for (int i = 0; i < length; i++) {
 			char tempSymbol = 0;
 			while (tempSymbol == 0) {
 				tempSymbol = generateRandomSymbol(CHAR_MIN, CHAR_MAX);
-				if (keyHelper[tempSymbol - CHAR_MIN] == -1) {
-					keyHelper[tempSymbol - CHAR_MIN] = i;
+				if (usedSymbols[tempSymbol - CHAR_MIN] == false) {
+					usedSymbols[tempSymbol - CHAR_MIN] = true;
 					key += tempSymbol;
 				} else {
 					tempSymbol = 0;
@@ -94,7 +93,7 @@ public class BaseCipher {
 	}
 	
 	private int getNumberFromKey(char symbol) {
-		return keyHelper[symbol - CHAR_MIN];
+		return key.indexOf(symbol);
 	}
 	/**
 	 * 
