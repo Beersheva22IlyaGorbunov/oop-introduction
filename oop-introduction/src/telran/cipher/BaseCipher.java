@@ -23,22 +23,22 @@ public class BaseCipher {
 		boolean[] usedSymbols = new boolean[CHAR_MAX - CHAR_MIN + 1];
 		String key = "";
 		for (int i = 0; i < length; i++) {
-			char tempSymbol = 0;
-			while (tempSymbol == 0) {
-				tempSymbol = generateRandomSymbol(CHAR_MIN, CHAR_MAX);
-				if (usedSymbols[tempSymbol - CHAR_MIN] == false) {
-					usedSymbols[tempSymbol - CHAR_MIN] = true;
-					key += tempSymbol;
-				} else {
-					tempSymbol = 0;
-				}
-			}
+			key += getNewSymbol(usedSymbols);
 		}
 		return key;
 	}
 	
-	private char generateRandomSymbol(char min, char max) {
-		return (char)(min + Math.random() * (max - min + 1));
+	private char getNewSymbol(boolean[] usedSymbols) {
+		char tempSymbol = 0;
+		do {
+			tempSymbol = generateRandomSymbol();
+		} while (usedSymbols[tempSymbol - CHAR_MIN] == true);
+		usedSymbols[tempSymbol - CHAR_MIN] = true;
+		return tempSymbol;
+	}
+	
+	private char generateRandomSymbol() {
+		return (char)(CHAR_MIN + Math.random() * (CHAR_MAX - CHAR_MIN + 1));
 	}
 	
 	public String cipher(int number) {
@@ -59,8 +59,12 @@ public class BaseCipher {
 	}
 	
 	private int digitsQuantity(int number) {
-		
-	    return (int) Math.floor(Math.log(number) / Math.log(alphabetLength)) + 1;
+		int result = 0;
+		do {
+			number /= alphabetLength;
+			result++;
+		} while (number != 0);
+		return result;
 	}
 	
 	public int decipher(String cipher) {
