@@ -70,15 +70,21 @@ public class BaseCipher {
 	public int decipher(String cipher) {
 		int number;
 		if (cipherIsValid(cipher)) {
-			int cipherLength = cipher.length();
-			number = getValue(cipher.charAt(0), cipherLength - 1);
-			for (int i = 1; i < cipher.length(); i++) {
-				number += getValue(cipher.charAt(i), cipherLength - 1 - i);
-			} 
+			number = getNumberFromString(cipher);
 		} else {
 			number = -1;
 		}
 		return number;
+	}
+	
+	private int getNumberFromString(String string) {
+		int res = 0;
+		int length = string.length();
+		for (int i = 0; i < length; i++) {
+			int symbolWeight = getNumberFromKey(string.charAt(i));
+			res = res * alphabetLength + symbolWeight;
+		}
+		return res;
 	}
 	/**
 	 * 
@@ -98,14 +104,5 @@ public class BaseCipher {
 	
 	private int getNumberFromKey(char symbol) {
 		return key.indexOf(symbol);
-	}
-	/**
-	 * 
-	 * @param symbol
-	 * @param position displays quantity of digits on the right side of symbol
-	 * @return
-	 */
-	private int getValue(char symbol, int position) {
-		return getNumberFromKey(symbol) * (int) Math.pow(alphabetLength, position);
 	}
 }

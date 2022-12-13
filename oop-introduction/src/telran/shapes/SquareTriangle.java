@@ -18,14 +18,15 @@ public class SquareTriangle extends Square {
 
 	private void addTopCorner(String[] res, int offset) {
 		int rightBorder = res.length - 1;
+		int width = getWidth() + offset;
 		char symbol = getSymbol().charAt(0);
-		int sidePos = isLeftDiagonal ? 0 : rightBorder;
+		int sidePos = isLeftDiagonal ? offset : rightBorder  + offset;
 		for (int i = 0; i < rightBorder; i++) {
-			char[] line = new char[getWidth() + offset];
+			char[] line = new char[width];
 			Arrays.fill(line, ' ');
-			int diagPos = isLeftDiagonal ? i : rightBorder - i;
-			line[diagPos + offset] = symbol;
-			line[sidePos + offset] = symbol;
+			int diagPos = isLeftDiagonal ? sidePos + i : sidePos - i;
+			line[diagPos] = symbol;
+			line[sidePos] = symbol;
 			res[i] = String.valueOf(line);
 		}
 	}
