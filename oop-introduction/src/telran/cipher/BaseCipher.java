@@ -1,7 +1,5 @@
 package telran.cipher;
 
-import java.util.Arrays;
-
 public class BaseCipher {
 	private static final char CHAR_MAX = 126;
 	private static final char CHAR_MIN = 33;
@@ -21,11 +19,11 @@ public class BaseCipher {
 
 	private String generateKey(int length) {
 		boolean[] usedSymbols = new boolean[CHAR_MAX - CHAR_MIN + 1];
-		String key = "";
+		char[] key = new char[length];
 		for (int i = 0; i < length; i++) {
-			key += getNewSymbol(usedSymbols);
+			key[i] = getNewSymbol(usedSymbols);
 		}
-		return key;
+		return String.valueOf(key);
 	}
 	
 	private char getNewSymbol(boolean[] usedSymbols) {
@@ -50,9 +48,8 @@ public class BaseCipher {
 		char[] resArr = new char[digitsQuantity];
 		int index = resArr.length - 1;
 		do {
-			char symbol = key.charAt(number % alphabetLength);
+			resArr[index] = key.charAt(number % alphabetLength);
 			number /= alphabetLength;
-			resArr[index] = symbol;
 			index--;
 		} while (number > 0);
 		return String.valueOf(resArr);
