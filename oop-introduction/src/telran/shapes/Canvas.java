@@ -12,18 +12,25 @@ public class Canvas extends Shape {
 	@Override
 	public String[] presentation(int offset) {
 		String[] res;
+		checkDirection();
 		int[][] sizesTemp = getShapesSizes();
 		if (direction == "column") {
-			checkWidth();
 			res = verticalPresentation(offset);
 		} else {
-			checkHeight();
 			res = horizontalPresentation(offset);
 		}
 		restoreSizes(sizesTemp);
 		return res;
 	}
 	
+	private void checkDirection() {
+		for (int i = 0; i < shapes.length; i++) {
+			if (shapes[i] instanceof Canvas) {
+				((Canvas)shapes[i]).setDirection(direction);
+			}
+		}
+	}
+
 	private int[][] getShapesSizes() {
 		int[][] sizes = new int[shapes.length][2];
 		for (int i = 0; i < shapes.length; i++) {
@@ -55,6 +62,7 @@ public class Canvas extends Shape {
 	}
 
 	private String[] horizontalPresentation(int offset) {
+		checkHeight();
 		String[] result = shapes[0].presentation(offset);
 		for (int i = 1; i < shapes.length; i++) {
 			result = joinHorizontalArrays(result, shapes[i].presentation(margin));
@@ -71,6 +79,7 @@ public class Canvas extends Shape {
 	}
 
 	private String[] verticalPresentation(int offset) {
+		checkWidth();
 		int presentationHeight = getPresentHeight();
 		String[] result = new String[presentationHeight];
 		int index = 0;

@@ -23,16 +23,16 @@ class CanvasTests {
 		SquareLeftTriangle leftTriangle = new SquareLeftTriangle(10);
 		Shape[] shapes1 = {rectangle, square, rightTriangle, leftTriangle};
 		Shape[] shapes2 = {leftTriangle, rectangle, square};
-		Canvas canvas1 = new Canvas(10, 10, shapes1);
+		Canvas canvas1 = new Canvas(40, 10, shapes1);
 		Canvas canvas2 = new Canvas(10, 10, shapes2);
-		Canvas canvas5 = new Canvas(10, 10, new Shape[] {canvas1, leftTriangle});
+		Canvas canvas5 = new Canvas(10, 10, new Shape[] {canvas1, canvas2});
 		canvas1.setMargin(10);
 		canvas1.setDirection(column);
 		canvas2.setMargin(10);
 		canvas2.setDirection(column);
-		canvas5.setDirection(column);
+		canvas5.setDirection(row);
 		displayStrings(canvas5.presentation(5));
-		displayStrings(square.presentation(5));
+//		displayStrings(square.presentation(5));
 	}
 	
 	private void displayStrings(String strings[]) {
