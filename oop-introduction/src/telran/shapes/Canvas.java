@@ -10,6 +10,11 @@ public class Canvas extends Shape {
 	}
 
 	@Override
+	public int getHeight() {
+		return direction == "row" ? super.getHeight() : sumHeights() + margin * (shapes.length - 1);
+	}
+	
+	@Override
 	public String[] presentation(int offset) {
 		String[] res;
 		checkDirection();
@@ -80,7 +85,7 @@ public class Canvas extends Shape {
 
 	private String[] verticalPresentation(int offset) {
 		checkWidth();
-		int presentationHeight = getPresentHeight();
+		int presentationHeight = getHeight();
 		String[] result = new String[presentationHeight];
 		int index = 0;
 		for (int i = 0; i < shapes.length - 1; i++) {
@@ -100,10 +105,10 @@ public class Canvas extends Shape {
 		}
 	}
 
-	private int getPresentHeight() {
-		int sum = shapes[0].presentation(0).length;
-		for (int i = 1; i < shapes.length; i++) {
-			sum += shapes[i].presentation(0).length + margin;
+	private int sumHeights() {
+		int sum = 0;
+		for (int i = 0; i < shapes.length; i++) {
+			sum += shapes[i].getHeight();
 		}
 		return sum;
 	}
