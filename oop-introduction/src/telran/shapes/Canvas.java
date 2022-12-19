@@ -52,14 +52,14 @@ public class Canvas extends Shape {
 		}
 	}
 
-	private void checkHeight() {
+	private void normalizeHeight() {
 		int presentationHeight = getHeight();
 		for (int i = 0; i < shapes.length; i++) {
 			shapes[i].setHeight(presentationHeight);
 		}
 	}
 
-	private void checkWidth() {
+	private void normalizeWidth() {
 		int presentationWidth = getWidth();
 		for (int i = 0; i < shapes.length; i++) {
 			shapes[i].setWidth(presentationWidth);
@@ -67,7 +67,7 @@ public class Canvas extends Shape {
 	}
 
 	private String[] horizontalPresentation(int offset) {
-		checkHeight();
+		normalizeHeight();
 		String[] result = shapes[0].presentation(offset);
 		for (int i = 1; i < shapes.length; i++) {
 			result = joinHorizontalArrays(result, shapes[i].presentation(margin));
@@ -84,7 +84,7 @@ public class Canvas extends Shape {
 	}
 
 	private String[] verticalPresentation(int offset) {
-		checkWidth();
+		normalizeWidth();
 		int presentationHeight = getHeight();
 		String[] result = new String[presentationHeight];
 		int index = 0;
