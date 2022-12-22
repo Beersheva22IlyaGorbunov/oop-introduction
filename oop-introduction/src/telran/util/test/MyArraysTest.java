@@ -21,10 +21,9 @@ class MyArraysTest {
 	}
 	
 	@Test
-	@Disabled
 	void evenOddSortTest() {
-		Integer[] integers = {13, 2, -8, 47, 100, 10, 7};
-		Integer[] expected = {-8, 2, 10, 100, 47, 13, 7};
+		Integer[] integers = {13, 2, -8, 47, -11, 100, 10, 7};
+		Integer[] expected = {-8, 2, 10, 100, 47, 13, 7, -11};
 		MyArrays.sort(integers, new EvenOddComparator());
 		assertArrayEquals(expected, integers);
 	}
