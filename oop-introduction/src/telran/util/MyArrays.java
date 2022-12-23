@@ -1,6 +1,10 @@
 package telran.util;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Predicate;
+
+import org.hamcrest.core.IsEqual;
 
 public class MyArrays {
 	static public <T> void sort (T[] objects, Comparator <T> comparator) {
@@ -27,20 +31,67 @@ public class MyArrays {
 		objects[j] = temp;
 	}
 	
-	public static <T> int binarySearch(T[] array, T searchedNumber, Comparator<T> comp) {
+	public static <T> int binarySearch(T[] array, T element, Comparator<T> comp) {
 		int left = 0;
 		int right = array.length - 1;
 		int middle = right / 2;
-		boolean elementFounded = comp.compare(array[middle], searchedNumber) == 0;
-		while (left <= right && !elementFounded) {
-			if (comp.compare(array[middle], searchedNumber) > 0) {
+		while (left <= right && !array[middle].equals(element)) {
+			if (comp.compare(element, array[middle]) < 0) {
 				right = middle - 1;
 			} else {
 				left = middle + 1;
 			}
 			middle = (left + right) / 2;
-			elementFounded = comp.compare(array[middle], searchedNumber) == 0;
 		}
-		return elementFounded ? middle : - middle - 1;
+		return left > right ? - left - 1 : middle ;
+	}
+
+	public static <T> T[] filter(T[] array, Predicate<T> predicate) {
+		int countPredicate = getCountPredicate(array, predicate);
+		T[] res = Arrays.copyOf(array, countPredicate);
+		int index = 0;
+		for (T element : array) {
+			if (predicate.test(element)) {
+				res[index++] = element;
+			}
+		}
+ 		return res;
+	}
+
+	private static <T> int getCountPredicate(T[] array, Predicate<T> predicate) {
+		int count = 0;
+		for (T element : array) {
+			if (predicate.test(element)) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	public static <T> T[] removeIf (T[] array, Predicate<T> predicate) {
+		return filter(array, predicate.negate());
+	}
+	
+	public static <T> T[] removeRepeated (T[] array) {
+		T[] tempArr = array.clone();
+		T[] res = array.clone();
+		int index = 0;
+		while (tempArr.length > 0) {
+			res[index++] = tempArr[0];
+			tempArr = removeIf(tempArr, Predicate.isEqual(tempArr[0]));
+		}
+		return Arrays.copyOf(res, index);
+	}
+
+	public static <T> boolean contains (T[] array, T pattern) {
+		boolean isFound = false;
+		int i = 0;
+		while (i < array.length && !isFound) {
+			if (array[i].equals(pattern)) {
+				isFound = true;
+			}
+			i++;
+		}
+		return isFound;
 	}
 }
