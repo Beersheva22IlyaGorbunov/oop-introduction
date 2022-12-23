@@ -89,15 +89,19 @@ class MyArraysTest {
 	
 	@Test
 	void containsTest() {
-		Integer containNumber = 2;
-		String containStr = "g";
-		assertTrue( MyArrays.contains(integers, containNumber));
-		assertFalse( MyArrays.contains(strings, containStr));
+		assertTrue( MyArrays.contains(integers, 2));
+		assertFalse( MyArrays.contains(integers, 5));
+		assertTrue( MyArrays.contains(strings, "asdb"));
+		assertFalse( MyArrays.contains(strings, "g"));
 	}
 	
 	@Test
 	void removeRepeatedTest() {
 		Integer[] arr = {1, 1, 2, 2, 3, 3, 4, 3, 5};
-		System.out.println(Arrays.toString(MyArrays.removeRepeated(arr)));
+		Integer[] expectedInt = {1, 2, 3, 4, 5};
+		Integer[] arrOnlyOne = {1, 1, 1, 1, 1, 1};
+		Integer[] expectedOnlyOne = {1};
+		assertArrayEquals(expectedInt , MyArrays.removeRepeated(arr));
+		assertArrayEquals(expectedOnlyOne , MyArrays.removeRepeated(arrOnlyOne));
 	}
 }
