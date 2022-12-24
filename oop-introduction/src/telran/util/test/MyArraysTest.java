@@ -89,6 +89,8 @@ class MyArraysTest {
 	
 	@Test
 	void containsTest() {
+		Integer[] intWithNull = {1, 3, null, 5};
+		assertTrue( MyArrays.contains(intWithNull, null));
 		assertTrue( MyArrays.contains(integers, 2));
 		assertFalse( MyArrays.contains(integers, 5));
 		assertTrue( MyArrays.contains(strings, "asdb"));

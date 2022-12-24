@@ -87,11 +87,21 @@ public class MyArrays {
 		boolean isFound = false;
 		int i = 0;
 		while (i < array.length && !isFound) {
-			if (array[i].equals(pattern)) {
-				isFound = true;
-			}
+			isFound = checkElement(array[i], pattern);
 			i++;
 		}
 		return isFound;
+	}
+
+	private static <T> boolean checkElement(T elem, T pattern) {
+		boolean isEqual = false;
+		if (elem != null && elem.equals(pattern)) {
+			isEqual = true;
+		} else {
+			if (pattern == null) {
+				isEqual = true;
+			}
+		}
+		return isEqual;
 	}
 }
