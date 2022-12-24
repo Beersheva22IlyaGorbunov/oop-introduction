@@ -73,12 +73,11 @@ public class MyArrays {
 	}
 	
 	public static <T> T[] removeRepeated (T[] array) {
-		T[] tempArr = array.clone();
 		T[] res = array.clone();
 		int index = 0;
-		while (tempArr.length > 0) {
-			res[index++] = tempArr[0];
-			tempArr = removeIf(tempArr, Predicate.isEqual(tempArr[0]));
+		while (array.length > 0) {
+			res[index++] = array[0];
+			array = removeIf(array, Predicate.isEqual(array[0]));
 		}
 		return Arrays.copyOf(res, index);
 	}
