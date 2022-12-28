@@ -34,7 +34,7 @@ public class ArrayListTest {
 		lastIndexOfTest();
 		
 		removeIfTest();
-		//After removeIf rest only 5, 3, 15
+		//After removeIf rest only 5, 3, 15, null
 		
 		toArrayTest();
 		
@@ -103,6 +103,14 @@ public class ArrayListTest {
 		try {
 			intList.add(4, 2);
 		} catch (Throwable e) {
+			System.out.println(e);
+		}
+		int curSize = intList.size();
+		try {
+			intList.add(null);
+			assertTrue(intList.removeIf(element -> element % 2 == 0));
+		} catch (Throwable e) {
+			intList.remove(curSize);
 			System.out.println(e);
 		}
 	}
