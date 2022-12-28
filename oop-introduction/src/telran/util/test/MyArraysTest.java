@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import telran.util.MyArrays;
 
 class MyArraysTest {
+	private static final int N_RUNS = 1000;
+	private static final int N_NUMBERS = 10000;
 	Integer[] integers = {13, 2, -8, 47, -11, 100, 10, 7};
 	String[] strings = {"asd", "asdb", "asdbg", "asdbgt"};
 	@Test
@@ -32,7 +34,7 @@ class MyArraysTest {
 	}
 	
 	@Test
-//	@Disabled
+	@Disabled
 	void arrayIntBinarySearchTest() {
 		Integer[] sorted = {-8, -5, -3, 0, 10, 100, 700};
 		Integer number = 100;
@@ -42,7 +44,7 @@ class MyArraysTest {
 	}
 	
 	@Test
-//	@Disabled
+	@Disabled
 	void arrayCharBinarySearchTest() {
 		Character[] chars = {'A', 'B', 'C', 'C', 'D', 'N', 'Y'};
 		Character character = 'N';
@@ -52,6 +54,7 @@ class MyArraysTest {
 	}
 	
 	@Test
+	@Disabled
 	void stringBinarySearchTest() {
 		assertEquals(0, MyArrays.binarySearch(strings, "asd", new StringsComparator()));
 		assertEquals(1, MyArrays.binarySearch(strings, "asdb", new StringsComparator()));
@@ -64,6 +67,7 @@ class MyArraysTest {
 	}
 	
 	@Test
+	@Disabled
 	void filterTest() {
 		int divider = 2;
 		String subStr = "g";
@@ -76,6 +80,7 @@ class MyArraysTest {
 	}
 	
 	@Test
+	@Disabled
 	void removeIfTest() {
 		int divider = 2;
 		String subStr = "g";
@@ -88,6 +93,7 @@ class MyArraysTest {
 	}
 	
 	@Test
+	@Disabled
 	void containsTest() {
 		Integer[] intWithNull = {1, 3, null, 5};
 		assertTrue( MyArrays.contains(intWithNull, null));
@@ -98,6 +104,7 @@ class MyArraysTest {
 	}
 	
 	@Test
+//	@Disabled
 	void removeRepeatedTest() {
 		Integer[] arr = {1, 1, 2, 2, 3, 3, 4, 3, 5};
 		Integer[] expectedInt = {1, 2, 3, 4, 5};
@@ -105,5 +112,27 @@ class MyArraysTest {
 		Integer[] expectedOnlyOne = {1};
 		assertArrayEquals(expectedInt , MyArrays.removeRepeated(arr));
 		assertArrayEquals(expectedOnlyOne , MyArrays.removeRepeated(arrOnlyOne));
+	}
+	
+	@Test
+	@Disabled
+	void joinFunctionalTest() {
+		String expected = "13, 2, -8, 47, -11, 100, 10, 7";
+		assertEquals(expected, MyArrays.join(integers, ", "));
+	}
+	
+	@Test
+	@Disabled
+	void joinPerformanceTest() {
+		Integer[] largeArray = getLargeNumbersArray();
+		for (int i = 0; i < N_RUNS; i++) {
+			MyArrays.join(largeArray, " asd as");
+		}
+	}
+
+	private Integer[] getLargeNumbersArray() {
+		Integer[] res = new Integer[N_NUMBERS];
+		Arrays.fill(res, 1000);
+		return res;
 	}
 }
