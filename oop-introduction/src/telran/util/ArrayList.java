@@ -39,17 +39,22 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		boolean isChanged = false;
+		int delta = 0;
 		for (int index = 0; index < size; index++) {
 			if (predicate.test(array[index])) {
-				if (index < size - 1) {
-					System.arraycopy(array, index + 1, array, index, size - index);
+				delta++;	
+			} else {
+				if (delta > 0 && index < size) {
+					shiftElement(index, delta);
 				}
-				size--;
-				isChanged = true;
 			}
 		}
-		return isChanged;
+		size -= delta;
+		return delta > 0;
+	}
+
+	private void shiftElement(int index, int delta) {
+		array[index - delta] = array[index];
 	}
 
 	@Override
@@ -65,10 +70,10 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public boolean contains(T pattern) {
 		int index = 0;
-		while (index < array.length && !isEqual(array[index], pattern)) {
+		while (index < size && !isEqual(array[index], pattern)) {
 			index++;
 		}
-		return index < array.length;
+		return index < size;
 	}
 	
 	private static <T> boolean isEqual(T elem, T pattern) {
@@ -82,7 +87,7 @@ public class ArrayList<T> implements List<T> {
 		}
 		System.arraycopy(array, 0, arr, 0, size);
 		Arrays.fill(arr, size, arr.length, null);
-		return (T[]) arr;
+		return arr;
 	}
 
 	@Override
