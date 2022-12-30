@@ -7,4 +7,5 @@ public interface List<T> extends Collection<T> {
 	int lastIndexOf (T pattern);
 	T get (int index);
 	void set (int index, T element);
+	
 }

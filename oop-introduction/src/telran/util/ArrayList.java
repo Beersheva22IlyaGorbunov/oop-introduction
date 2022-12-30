@@ -1,12 +1,31 @@
 package telran.util;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size;
+	
+	private class ArrayListIterator implements Iterator<T> {
+		int currentIndex = 0;
+		@Override
+		public boolean hasNext() {
+			return currentIndex < size;
+		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return array[currentIndex++];
+		}
+		
+	}
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList(int capacity) {
@@ -33,8 +52,18 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public boolean remove(T pattern) {
 		int index = indexOf(pattern);
-		remove(index);
+		if (index > -1) remove(index);
 		return index > -1;
+	}
+	
+	public boolean removeIfByRemove(Predicate<T> predicate) {
+		int oldSize = size;
+		for (int i = size - 1; i >= 0; i--) {
+			if (predicate.test(array[i])) {
+				remove(i);
+			}
+		}
+		return oldSize > size;
 	}
 
 	@Override
@@ -50,6 +79,22 @@ public class ArrayList<T> implements List<T> {
 			}
 		}
 		size -= delta;
+		Arrays.fill(array, size, size + delta, null);
+		return delta > 0;
+	}
+	
+	public boolean removeIfTroughtIterator(Predicate<T> predicate) {
+		int currentIndex = 0;
+		Iterator<T> iter = this.iterator();
+		while (iter.hasNext()) {
+			T currentElem = iter.next();
+			if (!predicate.test(currentElem)){
+				array[currentIndex++] = currentElem;
+			}
+		}
+		int delta = size - currentIndex;
+		size = size - delta;
+		Arrays.fill(array, size, size + delta, null);
 		return delta > 0;
 	}
 
@@ -107,10 +152,9 @@ public class ArrayList<T> implements List<T> {
 	public T remove(int index) {
 		checkIndex(index);
 		T temp = array[index];
-		if (index < size - 1) {
-			System.arraycopy(array, index + 1, array, index, size - index);
-		}
 		size--;
+		System.arraycopy(array, index + 1, array, index, size - index);
+		array[size] = null;
 		return temp;
 	}
 
@@ -148,6 +192,11 @@ public class ArrayList<T> implements List<T> {
 	public void set(int index, T elem) {
 		checkIndex(index);
 		array[index] = elem;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new ArrayListIterator();
 	}
 
 }
