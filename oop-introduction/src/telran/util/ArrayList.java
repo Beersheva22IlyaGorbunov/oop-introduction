@@ -55,53 +55,22 @@ public class ArrayList<T> implements List<T> {
 		if (index > -1) remove(index);
 		return index > -1;
 	}
-	
-	public boolean removeIfByRemove(Predicate<T> predicate) {
-		int oldSize = size;
-		for (int i = size - 1; i >= 0; i--) {
-			if (predicate.test(array[i])) {
-				remove(i);
-			}
-		}
-		return oldSize > size;
-	}
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		int delta = 0;
-		for (int index = 0; index < size; index++) {
+		int oldSize = size;
+		int tIndex = 0;
+		for (int index = 0; index < oldSize; index++) {
 			if (predicate.test(array[index])) {
-				delta++;	
+				size--;
 			} else {
-				if (delta > 0 && index < size) {
-					shiftElement(index, delta);
-				}
+				array[tIndex++] = array[index];
 			}
 		}
-		size -= delta;
-		Arrays.fill(array, size, size + delta, null);
-		return delta > 0;
+		Arrays.fill(array, size, oldSize, null);	
+		return oldSize > size;
 	}
 	
-	public boolean removeIfTroughtIterator(Predicate<T> predicate) {
-		int currentIndex = 0;
-		Iterator<T> iter = this.iterator();
-		while (iter.hasNext()) {
-			T currentElem = iter.next();
-			if (!predicate.test(currentElem)){
-				array[currentIndex++] = currentElem;
-			}
-		}
-		int delta = size - currentIndex;
-		size = size - delta;
-		Arrays.fill(array, size, size + delta, null);
-		return delta > 0;
-	}
-
-	private void shiftElement(int index, int delta) {
-		array[index - delta] = array[index];
-	}
-
 	@Override
 	public boolean isEmpty() {
 		return size == 0;
@@ -112,15 +81,6 @@ public class ArrayList<T> implements List<T> {
 		return size;
 	}
 
-	@Override
-	public boolean contains(T pattern) {
-		int index = 0;
-		while (index < size && !isEqual(array[index], pattern)) {
-			index++;
-		}
-		return index < size;
-	}
-	
 	private static <T> boolean isEqual(T elem, T pattern) {
 		return elem == null ? pattern == elem : elem.equals(pattern);
 	}
@@ -137,9 +97,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public void add(int index, T element) {
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException(String.format("Element can't be added in position %s", index));
-		}
+		checkIndex(index, true);
 		if (size == array.length) {
 			reallocate();
 		}
@@ -150,18 +108,12 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		checkIndex(index);
+		checkIndex(index, false);
 		T temp = array[index];
 		size--;
 		System.arraycopy(array, index + 1, array, index, size - index);
 		array[size] = null;
 		return temp;
-	}
-
-	private void checkIndex(int index) {
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException(String.format("Element with index %s doesn't exist", index));
-		}
 	}
 
 	@Override
@@ -184,13 +136,13 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T get(int index) {
-		checkIndex(index);
+		checkIndex(index, false);
 		return array[index];
 	}
 
 	@Override
 	public void set(int index, T elem) {
-		checkIndex(index);
+		checkIndex(index, false);
 		array[index] = elem;
 	}
 

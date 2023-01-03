@@ -63,7 +63,7 @@ public abstract class CollectionTest {
 	}
 	
 	private Integer generateRandomSymbol() {
-		return (int) (0 + Math.random() * (100));
+		return (int) (Math.random() * (100));
 	}
 
 	@Test
