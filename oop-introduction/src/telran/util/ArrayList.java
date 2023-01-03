@@ -9,7 +9,6 @@ public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size;
-	
 	private class ArrayListIterator implements Iterator<T> {
 		int currentIndex = 0;
 		@Override
@@ -60,10 +59,13 @@ public class ArrayList<T> implements List<T> {
 	public boolean removeIf(Predicate<T> predicate) {
 		int oldSize = size;
 		int tIndex = 0;
+		System.out.println(Arrays.toString(array));
 		for (int index = 0; index < oldSize; index++) {
 			if (predicate.test(array[index])) {
+				System.out.println(index + " " + array[index] + " deleted");
 				size--;
 			} else {
+				System.out.println(index + " " + array[index] + " stayed");
 				array[tIndex++] = array[index];
 			}
 		}
@@ -79,10 +81,6 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public int size() {
 		return size;
-	}
-
-	private static <T> boolean isEqual(T elem, T pattern) {
-		return elem == null ? pattern == elem : elem.equals(pattern);
 	}
 
 	@Override

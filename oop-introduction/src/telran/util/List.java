@@ -16,4 +16,7 @@ public interface List<T> extends Collection<T> {
 	default boolean contains(T pattern) {
 		return indexOf(pattern) > -1;
 	}
+	default boolean isEqual(T elem, T pattern) {
+		return elem == null ? pattern == elem : elem.equals(pattern);
+	}
 }

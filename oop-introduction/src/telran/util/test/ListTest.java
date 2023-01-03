@@ -61,6 +61,7 @@ public abstract class ListTest extends CollectionTest {
 		for(int i = 0; i < numbers.length; i++) {
 			assertEquals(i, list.indexOf(numbers[i]));
 		}
+		assertEquals(-1, list.indexOf(30));
 	}
 
 	@Test

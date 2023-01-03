@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import telran.util.*;
@@ -40,11 +41,12 @@ public abstract class CollectionTest {
 		assertTrue(collection.removeIf(n -> n % 2 == 0));
 		assertArrayEquals(expected, collection.toArray(empty));
 		assertFalse(collection.removeIf(n -> n % 2 == 0));
-		assertTrue(collection.removeIf(n -> true));
+		assertTrue(collection.removeIf(n -> n % 2 != 0));
 		assertTrue(collection.isEmpty());
 	}
 	
 	@Test
+//	@Disabled
 	void testRemoveIfperformance() {
 		for (int i = 0; i < 10000; i++) {
 			setUpForPerformance();
@@ -57,13 +59,19 @@ public abstract class CollectionTest {
 	}
 	
 	void setUpForPerformance() {
+		collection.removeIf(n -> true);
 		for (int i = 0; i < 100; i++) {
-			collection.add(generateRandomSymbol());
+			int randomSymbol = generateRandomSymbol();
+			collection.add(randomSymbol);
 		}
 	}
 	
 	private Integer generateRandomSymbol() {
-		return (int) (Math.random() * (100));
+		return getRandomNumber(0, 10);
+	}
+	
+	public int getRandomNumber(int min, int max) {
+	    return (int) ((Math.random() * (max - min)) + min);
 	}
 
 	@Test
