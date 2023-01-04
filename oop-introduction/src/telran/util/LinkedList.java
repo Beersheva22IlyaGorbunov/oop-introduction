@@ -93,10 +93,10 @@ public class LinkedList<T> implements List<T> {
 	}
 
 	private void fillArray(T[] arr) {
-		Node<T> current = head;
-		for (int i = 0; i < size; i++) {
-			arr[i] = current.obj;
-			current = current.next;
+		int index = 0;
+		Iterator<T> iter = new LinkedListIterator();
+		while (iter.hasNext()) {
+			arr[index++] = iter.next();
 		}
 	}
 
