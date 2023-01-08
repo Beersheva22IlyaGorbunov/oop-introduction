@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> extends AbstractCollection<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
-	private int size;
+	
 	private class ArrayListIterator implements Iterator<T> {
 		int currentIndex = 0;
+		boolean flNext = false;
+		
 		@Override
 		public boolean hasNext() {
 			return currentIndex < size;
@@ -21,7 +23,17 @@ public class ArrayList<T> implements List<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			flNext = true;
 			return array[currentIndex++];
+		}
+		
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			ArrayList.this.remove(currentIndex - 1);
+			flNext = false;
 		}
 		
 	}
@@ -48,49 +60,20 @@ public class ArrayList<T> implements List<T> {
 		array = Arrays.copyOf(array, array.length * 2);
 	}
 
-	@Override
-	public boolean remove(T pattern) {
-		int index = indexOf(pattern);
-		if (index > -1) remove(index);
-		return index > -1;
-	}
-
+	
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		int oldSize = size;
 		int tIndex = 0;
-		System.out.println(Arrays.toString(array));
 		for (int index = 0; index < oldSize; index++) {
 			if (predicate.test(array[index])) {
-				System.out.println(index + " " + array[index] + " deleted");
 				size--;
 			} else {
-				System.out.println(index + " " + array[index] + " stayed");
 				array[tIndex++] = array[index];
 			}
 		}
 		Arrays.fill(array, size, oldSize, null);	
 		return oldSize > size;
-	}
-	
-	@Override
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
-	@Override
-	public int size() {
-		return size;
-	}
-
-	@Override
-	public T[] toArray(T[] arr) {
-		if (size > arr.length) {
-			arr = Arrays.copyOf(arr, size);
-		}
-		System.arraycopy(array, 0, arr, 0, size);
-		Arrays.fill(arr, size, arr.length, null);
-		return arr;
 	}
 
 	@Override
