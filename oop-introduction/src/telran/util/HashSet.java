@@ -50,8 +50,7 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			return currentIndex > -1 ? hashTable[currentIndex].iterator() : null;
 		}
 
-		private int getNextIndex(int initialDelta) {
-			int delta = initialDelta;
+		private int getNextIndex(int delta) {
 			while (currentIndex + delta < hashTable.length && hashTable[currentIndex + delta] == null) {
 				delta++;
 			}
