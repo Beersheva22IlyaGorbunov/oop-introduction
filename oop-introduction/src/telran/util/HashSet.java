@@ -35,12 +35,9 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 				if (listIterator.hasNext()) {
 					res = true;
 				} else {
-					int delta = 1;
-					while (currentIndex + delta < hashTable.length && hashTable[currentIndex + delta] == null) {
-						delta++;
-					}
-					if (delta + currentIndex < hashTable.length) {
-						nextNonNullIndex = delta + currentIndex;
+					int nextIndex = getNextIndex();
+					if (nextIndex > -1) {
+						nextNonNullIndex = nextIndex;
 						res = true;
 					}
 				}
@@ -49,10 +46,24 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 		}
 
 		private Iterator<T> getInitialIterator() {
-			while (currentIndex < hashTable.length && hashTable[currentIndex] == null) {
-				currentIndex++;
+			currentIndex = getInitialIndex();
+			return currentIndex > -1 ? hashTable[currentIndex].iterator() : null;
+		}
+
+		private int getNextIndex(int initialDelta) {
+			int delta = initialDelta;
+			while (currentIndex + delta < hashTable.length && hashTable[currentIndex + delta] == null) {
+				delta++;
 			}
-			return currentIndex < hashTable.length ? hashTable[currentIndex].iterator() : null;
+			return currentIndex + delta < hashTable.length ? currentIndex + delta : -1;
+		}
+		
+		private int getNextIndex() {
+			return getNextIndex(1);
+		}
+		
+		private int getInitialIndex() {
+			return getNextIndex(0);
 		}
 
 		@Override
