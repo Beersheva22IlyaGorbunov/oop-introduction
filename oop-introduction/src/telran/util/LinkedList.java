@@ -238,13 +238,13 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 		Node<T> singleStep = head;
 		Node<T> doubleStep = head;
 		boolean isLoop = false;
-		while (!isLoop && doubleStep != tail && doubleStep.next != tail) {
+		while (!isLoop && doubleStep != null && doubleStep.next != null) {
 			singleStep = singleStep.next;
 			doubleStep = doubleStep.next.next;
 			if (singleStep == doubleStep) {
 				isLoop = true;
 			}
 		};
-		return isLoop || tail.next != null;
+		return isLoop;
 	}
 }

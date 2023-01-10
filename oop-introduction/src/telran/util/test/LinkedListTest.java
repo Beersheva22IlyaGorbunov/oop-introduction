@@ -10,45 +10,69 @@ import org.junit.jupiter.api.Test;
 import telran.util.*;
 
 class LinkedListTest extends ListTest {
-	LinkedList <Integer> list;
+	LinkedList <Integer> linkedList;
 //	{10, 100, -5, 134, 280, 120, 15}
 	@BeforeEach
 	@Override
 	void setUp() throws Exception {
 		collection = new LinkedList<>();
 		super.setUp();
-		list = (LinkedList<Integer>) collection;
+		linkedList = (LinkedList<Integer>) collection;
 	} 
 	@Test
 	void hasLoopMiddleTest() {
-		assertFalse(list.hasLoop());
-		list.setNext(5, 3);
-		assertTrue(list.hasLoop());
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(5, 3);
+		assertTrue(linkedList.hasLoop());
 	}
 	@Test
 	void hasLoopHeadTest() {
-		assertFalse(list.hasLoop());
-		list.setNext(5, 0);
-		assertTrue(list.hasLoop());
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(5, 0);
+		assertTrue(linkedList.hasLoop());
 	}
 	@Test
 	void hasLoopTailTest() {
-		assertFalse(list.hasLoop());
-		list.setNext(6, 0);
-		assertTrue(list.hasLoop());
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(6, 0);
+		assertTrue(linkedList.hasLoop());
 	}
 	@Test
 	void hasLoopSelfloopTest() {
-		assertFalse(list.hasLoop());
-		list.setNext(3, 3);
-		assertTrue(list.hasLoop());
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(3, 3);
+		assertTrue(linkedList.hasLoop());
 	}
 	@Test
 	void hasLoopOneElemTest() {
-		LinkedList <Integer> list = new LinkedList<>();
-		list.add(3);
-		assertFalse(list.hasLoop());
-		list.setNext(0, 0);
-		assertTrue(list.hasLoop());
+		LinkedList <Integer> linkedList = new LinkedList<>();
+		linkedList.add(3);
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(0, 0);
+		assertTrue(linkedList.hasLoop());
+	}
+	@Test
+	void isLoopTestEven() {
+		linkedList.add(300);
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(linkedList.size() - 1, 0);
+		assertTrue(linkedList.hasLoop());
+		
+	}
+	@Test
+	void isLoopTestOdd() {
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(linkedList.size() - 1, 0);
+		assertTrue(linkedList.hasLoop());
+		
+	}
+	@Test
+	void isLoopNoOneNode() {
+		LinkedList<Integer> linkedList = new LinkedList<>();
+		assertFalse(linkedList.hasLoop());
+		linkedList.add(10);
+		assertFalse(linkedList.hasLoop());
+		linkedList.setNext(0, 0);
+		assertTrue(linkedList.hasLoop());
 	}
 }
