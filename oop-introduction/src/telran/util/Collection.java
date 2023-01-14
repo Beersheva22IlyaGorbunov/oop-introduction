@@ -22,11 +22,12 @@ public interface Collection<T> extends Iterable <T>{
 		return oldSize > size();
 	}
 	default T[] toArray(T[] arr) {
-		if (size() > arr.length) {
-			arr = Arrays.copyOf(arr, size());
+		int size = size();
+		if (size > arr.length) {
+			arr = Arrays.copyOf(arr, size);
 		}
 		fillArray(arr);
-		Arrays.fill(arr, size(), arr.length, null);
+		Arrays.fill(arr, size, arr.length, null);
 		return arr;
 	}
 

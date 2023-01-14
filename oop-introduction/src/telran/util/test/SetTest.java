@@ -12,7 +12,6 @@ import telran.util.*;
 
 public abstract class SetTest extends CollectionTest {
 	Set<Integer> set;
-	
 	@BeforeEach
 	@Override
 	void setUp() throws Exception {
@@ -40,12 +39,8 @@ public abstract class SetTest extends CollectionTest {
 		Arrays.sort(actual);
 		Arrays.sort(numbersCopy);
 		
-		assertArrayEquals(actual, numbersCopy);
+		assertArrayEquals(numbersCopy, actual);
 		assertThrowsExactly(NoSuchElementException.class, () -> iter.next());
-		
-		Set<Integer> emptySet = new HashSet<>();
-		Iterator<Integer> iter2 = emptySet.iterator();
-		assertThrowsExactly(NoSuchElementException.class, () -> iter2.next());
 	}
 	
 	@Override

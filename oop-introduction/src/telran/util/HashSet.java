@@ -24,25 +24,17 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 	}
 	private class HashSetIterator implements Iterator<T> {
 		int currentIndex = 0;
-		int nextNonNullIndex = 0;
-		Iterator<T> listIterator = getInitialIterator();
+		Iterator<T> listIterator;
+		int currentElement = 0;
 		boolean flNext = false;
+		
+		HashSetIterator() {
+			listIterator = getInitialIterator();
+		}
 		
 		@Override
 		public boolean hasNext() {
-			boolean res = false;
-			if (listIterator != null) {
-				if (listIterator.hasNext()) {
-					res = true;
-				} else {
-					int nextIndex = getNextIndex(false);
-					if (nextIndex > -1) {
-						nextNonNullIndex = nextIndex;
-						res = true;
-					}
-				}
-			}
-			return res;
+			return currentElement < size;
 		}
 
 		private Iterator<T> getInitialIterator() {
@@ -57,7 +49,7 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			}
 			return nextIndex < hashTable.length ? nextIndex : -1;
 		}
-
+		
 		@Override
 		public T next() {
 			T res;
@@ -67,10 +59,11 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			if (listIterator.hasNext()) {
 				res = listIterator.next();
 			} else {
-				listIterator = hashTable[nextNonNullIndex].iterator();
-				currentIndex = nextNonNullIndex;
+				currentIndex = getNextIndex(false);
+				listIterator = hashTable[currentIndex].iterator();
 				res = listIterator.next();
 			}
+			currentElement++;
 			flNext = true;
 			return res;
 		}
@@ -85,6 +78,7 @@ public class HashSet<T> extends AbstractCollection<T> implements Set<T> {
 			if (hashTable[currentIndex].isEmpty()) {
 				hashTable[currentIndex] = null;
 			}
+			currentElement--;
 			size--;
 			flNext = false;
 		}

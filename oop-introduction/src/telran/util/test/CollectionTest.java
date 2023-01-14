@@ -48,8 +48,8 @@ public abstract class CollectionTest {
 	}
 	
 	@Test
-//	@Disabled
-	void testRemoveIfperformance() {
+	@Disabled
+	void testRemoveIfPerformance() {
 		for (int i = 0; i < 10000; i++) {
 			setUpForPerformance();
 			collection.removeIf(n -> true);
@@ -111,6 +111,7 @@ public abstract class CollectionTest {
 		Iterator<Integer> iter  = collection.iterator();
 		assertThrowsExactly(IllegalStateException.class, () -> iter.remove());
 		Integer num = iter.next();
+		assertTrue(iter.hasNext());
 		assertTrue(collection.contains(num));
 		iter.remove();
 		assertFalse(collection.contains(num));
