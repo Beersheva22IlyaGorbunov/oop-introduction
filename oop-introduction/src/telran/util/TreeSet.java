@@ -16,7 +16,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 	}
 	
 	private class TreeSetIterator implements Iterator<T> {
-		Node<T> current = root;
+		Node<T> current;
 		
 		TreeSetIterator() {
 			current = getLeast(root);
@@ -77,38 +77,34 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 		}
 		return isAdded;
 	}
+
 	private boolean addNonRootElement(Node<T> newNode) {
 		boolean isAdded = false;
-		Node<T> current = root;
-		int compRes = 0;
-		do {
-			compRes = comp.compare(newNode.obj, current.obj);
-			if (compRes > 0) {
-				if (current.right != null) {
-					current = current.right;
-				} else {
-					isAdded = addRightElement(newNode, current);
-				}
-			} else if (compRes < 0) {
-				if (current.left != null) {
-					current = current.left;
-				} else {
-					isAdded = addLeftElement(newNode, current);
-				}
+		Node<T> current = getNode(newNode.obj);
+		if (current.obj != newNode.obj) {
+			boolean isRight = comp.compare(newNode.obj, current.obj) > 0 ? true : false;
+			if (isRight) {
+				addRightElement(newNode, current);
+			} else {
+				addLeftElement(newNode, current);
 			}
-		} while (!isAdded && compRes != 0);
+			isAdded = true;
+		}
 		return isAdded;
 	}
+	
 	private boolean addLeftElement(Node<T> newNode, Node<T> current) {
 		newNode.parent = current;
 		current.left = newNode;
 		return true;
 	}
+	
 	private boolean addRightElement(Node<T> newNode, Node<T> current) {
 		newNode.parent = current;
 		current.right = newNode;
 		return true;
 	}
+	
 	private boolean addRoot(Node<T> newNode) {
 		root = newNode;
 		return true;
@@ -116,25 +112,30 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 
 	@Override
 	public boolean remove(T pattern) {
-		// Not implemented yet
 		return false;
 	}
-
+	
 	@Override
 	public boolean contains(T element) {
-		boolean elemExists = false;
+		return getNode(element).obj == element;
+	}
+	
+	public Node<T> getNode(T element) {
+		Node<T> current = null;
+		Node<T> next = null;
 		if (root != null) {
-			Node<T> current = root;
-			do {
-				int compRes = comp.compare(element, current.obj);
-				if (compRes == 0) {
-					elemExists = true;
-				} else {
-					current = compRes > 0 ? current.right : current.left;
+			current = root;
+			int compRes = comp.compare(element, current.obj);
+			next = compRes > 0 ? current.right : current.left;
+			while (next != null && current.obj != element) {
+				current = next;
+				compRes = comp.compare(element, current.obj);
+				if (compRes != 0) {
+					next = compRes > 0 ? current.right : current.left;
 				}
-			} while (current != null && !elemExists);
+			};
 		}
-		return elemExists;
+		return current;
 	}
 
 	@Override
