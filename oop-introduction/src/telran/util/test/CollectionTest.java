@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -125,5 +126,13 @@ public abstract class CollectionTest {
 		assertTrue(collection.contains(num));
 		iter1.remove();
 		assertFalse(collection.contains(num));
+	}
+	@Test
+	void nextExceptionIteratorTest() {
+		Iterator<Integer> iter  = collection.iterator();
+		while (iter.hasNext()) {
+			iter.next();
+		}
+		assertThrowsExactly(NoSuchElementException.class, () -> iter.next());
 	}
 }
