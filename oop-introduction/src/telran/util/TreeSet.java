@@ -17,6 +17,8 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 	
 	private class TreeSetIterator implements Iterator<T> {
 		Node<T> current;
+		Node<T> prev;
+		boolean flNext = false;
 		
 		TreeSetIterator() {
 			current = getLeast(root);
@@ -33,6 +35,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 				throw new NoSuchElementException();
 			}
 			T res = current.obj;
+			prev = current;
 			Node<T> parent = current.parent;
 			if (current.right == null) {
 				while (parent != null && current == parent.right) {
@@ -43,7 +46,12 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 			} else {
 				current = getLeast(current.right);
 			}
+			flNext = true;
 			return res;
+		}
+		
+		@Override
+		public void remove() {
 		}
 		
 		public Node<T> getLeast(Node<T> node) {
@@ -119,15 +127,15 @@ public class TreeSet<T> extends AbstractCollection<T> implements Set<T> {
 	public boolean contains(T element) {
 		return getNode(element).obj == element;
 	}
-	
-	public Node<T> getNode(T element) {
+
+	private Node<T> getNode(T element) {
 		Node<T> current = null;
 		Node<T> next = null;
 		if (root != null) {
 			current = root;
 			int compRes = comp.compare(element, current.obj);
 			next = compRes > 0 ? current.right : current.left;
-			while (next != null && current.obj != element) {
+			while (next != null && !current.obj.equals(element)) {
 				current = next;
 				compRes = comp.compare(element, current.obj);
 				if (compRes != 0) {

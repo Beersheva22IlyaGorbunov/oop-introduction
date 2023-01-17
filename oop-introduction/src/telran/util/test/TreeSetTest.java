@@ -22,6 +22,7 @@ class TreeSetTest extends SetTest {
 
 	@Override
 	@Test
+//	@Disabled
 	void testIterator() {
 		Integer[] actual = new Integer[numbers.length];
 		int currentIndex = 0;

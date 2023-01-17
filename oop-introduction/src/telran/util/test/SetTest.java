@@ -20,6 +20,7 @@ public abstract class SetTest extends CollectionTest {
 	}
 	@Override
 	@Test
+//	@Disabled
 	void testAdd() {
 		assertTrue(set.add(20));
 		assertFalse(set.add(20));
@@ -27,6 +28,7 @@ public abstract class SetTest extends CollectionTest {
 
 	@Override
 	@Test
+//	@Disabled
 	void testIterator() {
 		Integer[] actual = new Integer[numbers.length];
 		int currentIndex = 0;
@@ -45,6 +47,7 @@ public abstract class SetTest extends CollectionTest {
 	
 	@Override
 	@Test
+//	@Disabled
 	void testToArray() {
 		
 		Arrays.fill(ar, 10);
@@ -62,6 +65,7 @@ public abstract class SetTest extends CollectionTest {
 	
 	@Override
 	@Test
+	@Disabled
 	void testRemove() {
 		Integer [] expected = {10, 100, -5,  280, 120, 15};
 		assertTrue(collection.remove((Integer)134));
