@@ -118,14 +118,11 @@ public abstract class CollectionTest {
 		assertFalse(collection.contains(num));
 		assertEquals(numbers.length - 1, collection.size());
 		assertThrowsExactly(IllegalStateException.class, () -> iter.remove());
-		
-		Iterator<Integer> iter1  = collection.iterator();
-		while (iter1.hasNext()) {
-			num = iter1.next();
+		while (iter.hasNext()) {
+			iter.next();
+			iter.remove();
 		}
-		assertTrue(collection.contains(num));
-		iter1.remove();
-		assertFalse(collection.contains(num));
+		assertTrue(collection.isEmpty());
 	}
 	@Test
 	void nextExceptionIteratorTest() {

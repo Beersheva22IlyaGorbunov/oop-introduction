@@ -5,6 +5,18 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
+	private Node<T> root;
+	private Comparator<T> comp;
+	
+	public TreeSet(Comparator<T> comp) {
+		this.comp = comp;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public TreeSet() {
+		this((Comparator<T>) Comparator.naturalOrder());
+	}
+	
 	static private class Node<T> {
 		T obj;
 		Node<T> parent;
@@ -51,60 +63,36 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 			removeNode(prev);
 			flNext = false;
 		}
-		
-		
 	}
-	private Node<T> root;
-	private Comparator<T> comp;
 	
-	public TreeSet(Comparator<T> comp) {
-		this.comp = comp;
-	}
-	@SuppressWarnings("unchecked")
-	public TreeSet() {
-		this((Comparator<T>) Comparator.naturalOrder());
-	}
 	@Override
 	public boolean add(T element) {
 		boolean isAdded = false;
-		Node<T> newNode = new Node<T>(element);
-		if (root == null) {
-			isAdded = addRoot(newNode);
-		} else {
-			isAdded = addNonRootElement(newNode);
-		}
-		if (isAdded) {
+		Node<T> parent = getNode(element);
+		int compRes = 0;
+		if(parent == null || (compRes = comp.compare(element, parent.obj)) != 0) {
+			isAdded  = true;
 			size++;
-		}
-		return isAdded;
-	}
-
-	private boolean addNonRootElement(Node<T> newNode) {
-		boolean isAdded = false;
-		Node<T> current = getNode(newNode.obj);
-		if (current.obj != newNode.obj) {
-			boolean isRight = comp.compare(newNode.obj, current.obj) > 0 ? true : false;
-			newNode.parent = current;
-			if (isRight) {
-				current.right = newNode;
+			Node<T> node = new Node<>(element);
+			node.parent = parent;
+			if(parent == null) {
+				root = node;
 			} else {
-				current.left = newNode;
+				if (compRes < 0) {
+					parent.left = node;
+				} else {
+					parent.right = node;
+				}
 			}
-			isAdded = true;
 		}
 		return isAdded;
-	}
-	
-	private boolean addRoot(Node<T> newNode) {
-		root = newNode;
-		return true;
 	}
 
 	@Override
 	public boolean remove(T pattern) {
 		Node<T> node = getNode(pattern);
 		boolean isDeleted = false;
-		if (node.obj.equals(pattern)) {
+		if (node != null && node.obj.equals(pattern)) {
 			removeNode(node);
 			isDeleted = true;
 		}
@@ -113,7 +101,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	
 	private void removeNode(Node<T> removableNode) {
 		while (removableNode.left != null && removableNode.right != null) {
-			Node<T> replacingNode = getLeastNode(removableNode.right);
+			Node<T> replacingNode = getGreatestNode(removableNode.left);
 			removableNode.obj = replacingNode.obj;
 			removableNode = replacingNode;
 		}
@@ -151,7 +139,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	private Node<T> getNode(T element) {
 		Node<T> current = null;
 		Node<T> next = root;
-		int compRes = comp.compare(element, next.obj);
+		int compRes;
 		while (next != null && (compRes = comp.compare(element, next.obj)) != 0) {
 			current = next;
 			next = compRes > 0 ? current.right : current.left;
@@ -196,33 +184,19 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	}
 	@Override
 	public T floor(T element) {
-		Node<T> parent = getNode(element);
-		T res = null;
-		int compRes = comp.compare(element, parent.obj);
-		if (compRes > 0) {
-			res = parent.obj;
-		} else if (compRes == 0) {
-			res = element;
-		} else {
-			Node<T> prev = getPrevCurrent(parent);
-			res = prev == null ? null : prev.obj;
+		Node<T> node = getNode(element);
+		if (comp.compare(element, node.obj) < 0) {
+			node = getPrevCurrent(node);
 		}
-		return res;
+		return node == null ? null : node.obj;
 	}
 	@Override
 	public T ceiling(T element) {
-		Node<T> parent = getNode(element);
-		T res = null;
-		int compRes = comp.compare(element, parent.obj);
-		if (compRes < 0) {
-			res = parent.obj;
-		} else if (compRes == 0) {
-			res = element;
-		} else {
-			Node<T> next = getNextCurrent(parent);
-			res = next == null ? null : next.obj;
+		Node<T> node = getNode(element);
+		if (comp.compare(element, node.obj) > 0) {
+			node = getNextCurrent(node);
 		}
-		return res;
+		return node == null ? null : node.obj;
 	}
 	@Override
 	public T first() {

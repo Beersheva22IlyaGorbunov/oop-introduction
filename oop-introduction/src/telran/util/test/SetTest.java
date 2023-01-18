@@ -75,5 +75,23 @@ public abstract class SetTest extends CollectionTest {
 		
 		assertArrayEquals(expected, actual);
 		assertFalse(collection.remove((Integer)134));
+		
+		Integer[] numbersInSet = new Integer[1000];
+		fillSetAndArr(numbersInSet);
+		for (Integer num: numbersInSet) {
+			collection.remove(num);
+		}
+		assertTrue(collection.isEmpty());
+	}
+	
+	void fillSetAndArr(Integer[] arr) {
+		collection.removeIf(n -> true);
+		int index = 0;
+		while (index < arr.length) {
+			int randomSymbol = getRandomNumber(0, 100000);
+			if (collection.add(randomSymbol)) {
+				arr[index++] = randomSymbol;
+			}
+		}
 	}
 }
