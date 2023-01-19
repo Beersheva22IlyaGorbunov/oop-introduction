@@ -92,7 +92,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	public boolean remove(T pattern) {
 		Node<T> node = getNode(pattern);
 		boolean isDeleted = false;
-		if (node != null && node.obj.equals(pattern)) {
+		if (node != null && comp.compare(node.obj, pattern) == 0) {
 			removeNode(node);
 			isDeleted = true;
 		}
@@ -184,6 +184,9 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	}
 	@Override
 	public T floor(T element) {
+		if (root == null || element == null) {
+			throw new NullPointerException();
+		}
 		Node<T> node = getNode(element);
 		if (comp.compare(element, node.obj) < 0) {
 			node = getPrevCurrent(node);
@@ -192,6 +195,9 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	}
 	@Override
 	public T ceiling(T element) {
+		if (root == null || element == null) {
+			throw new NullPointerException();
+		}
 		Node<T> node = getNode(element);
 		if (comp.compare(element, node.obj) > 0) {
 			node = getNextCurrent(node);
