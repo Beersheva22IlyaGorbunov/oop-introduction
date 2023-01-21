@@ -90,7 +90,7 @@ public class LinearRecursion {
 	public static boolean checkSubstring(String string, String substring, int stringPos, int substrPos) {
 		boolean isStarted = false;
 		boolean isFound = false;
-		if (substrPos < substring.length() && stringPos < string.length()) {
+		if (!isFound && substrPos < substring.length() && stringPos < string.length()) {
 			if (string.charAt(stringPos) == substring.charAt(substrPos)) {
 				isStarted = true;
 			} else if (string.charAt(stringPos) == substring.charAt(0)) {
