@@ -29,19 +29,13 @@ public class LinearRecursion {
 	
 	public static int multiply(int a, int b) {
 		int res = 0;
-		boolean isNegative = false;
-		if (a < 0) {
-			isNegative = true;
-			a = -a;
-		}
 		if (b < 0) {
-			isNegative = isNegative == true ? false : true;
-			b = -b;
+			res = -multiply(a, -b);
 		}
 		if (b > 0) {
 			res = a + multiply(a, b - 1);
 		}
-		return isNegative ? -res : res;
+		return res;
 	}
 	
 	public static long sum(int[] ar) {

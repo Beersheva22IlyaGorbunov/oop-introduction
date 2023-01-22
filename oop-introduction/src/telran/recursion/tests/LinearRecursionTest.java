@@ -50,6 +50,7 @@ public class LinearRecursionTest {
 	void multiplyTest() {
 		assertEquals(6, multiply(3, 2));
 		assertEquals(6, multiply(2, 3));
+		assertEquals(-6, multiply(2, -3));
 		assertEquals(0, multiply(2, 0));
 		assertEquals(-6, multiply(-3, 2));
 	}
