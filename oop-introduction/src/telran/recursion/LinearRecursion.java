@@ -31,8 +31,7 @@ public class LinearRecursion {
 		int res = 0;
 		if (b < 0) {
 			res = -multiply(a, -b);
-		}
-		if (b > 0) {
+		} else if (b > 0) {
 			res = a + multiply(a, b - 1);
 		}
 		return res;
