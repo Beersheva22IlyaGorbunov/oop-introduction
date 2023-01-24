@@ -100,7 +100,7 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	}
 	
 	private void removeNode(Node<T> removableNode) {
-		while (removableNode.left != null && removableNode.right != null) {
+		if (removableNode.left != null && removableNode.right != null) {
 			Node<T> replacingNode = getGreatestNode(removableNode.left);
 			removableNode.obj = replacingNode.obj;
 			removableNode = replacingNode;
