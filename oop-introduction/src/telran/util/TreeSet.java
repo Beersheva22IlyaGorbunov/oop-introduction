@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
+	private static final String SYMBOL = " ";
+	private static final int NUMBER_SYMBOLS_PER_LEVEL = 5;
 	private Node<T> root;
 	private Comparator<T> comp;
 	
@@ -213,4 +215,69 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 		return root == null ? null : getGreatestNode(root).obj;
 	}
 	
+	public void displayTreeRotated() {
+		displayTreeRotated(root, 0);
+	}
+
+	private void displayTreeRotated(Node<T> root, int level) {
+		if (root != null) {
+			displayTreeRotated(root.right, level + 1);
+			displayRoot(root, level);
+			displayTreeRotated(root.left, level + 1);
+		}
+	}
+
+	private void displayRoot(Node<T> root, int level) {
+		System.out.printf("%s%s\n", SYMBOL.repeat(NUMBER_SYMBOLS_PER_LEVEL * level), root.obj);
+	}
+
+	public int height() {
+		return height(root);
+	}
+
+	private int height(Node<T> root) {
+		int res = 0;
+		if (root != null) {
+			int heightLeft = height(root.left);
+			int heightRight = height(root.right);
+			res = Math.max(heightLeft, heightRight) + 1;
+		}
+		return res;
+	}
+
+	public int width() {
+		return width(root);
+	}
+
+	private int width(Node<T> root) {
+		int res = 0;
+		if (root != null) {
+			if (root.left == null && root.right == null) {
+				res += 1;
+			} else {
+				res += width(root.right);
+				res += width(root.left);
+			}
+		}
+		return res;
+	}
+
+	public void inversion() {
+		comp = comp.reversed();
+		inversion(root);
+	}
+	
+	public void inversion(Node<T> root) {
+		if (root != null) {
+			swapBranches(root);
+			inversion(root.right);
+			inversion(root.left);
+		}
+	}
+
+	private void swapBranches(Node<T> root) {
+		Node<T> temp = root.right;
+		root.right = root.left;
+		root.left = temp;
+	}
 }
