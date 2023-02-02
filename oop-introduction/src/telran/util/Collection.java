@@ -45,7 +45,7 @@ public interface Collection<T> extends Iterable <T>{
 	}
 	
 	default T[] toArrayShuffling(T[] arr) {
-		return this.stream().sorted((a, b) -> Math.random() < 0.5 ? -1 : 1).toList().toArray(arr);
+		return this.stream().sorted((a, b) -> Math.random() < 0.5 ? -1 : 1).toArray(x -> Arrays.copyOf(arr, size()));
 	}
 
 	private void fillArray(T[] arr) {
