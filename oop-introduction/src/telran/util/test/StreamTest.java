@@ -47,6 +47,7 @@ public class StreamTest {
 	@Test
 	void sportLotoTest() {
 		new Random().ints(1, 50).distinct().limit(7).forEach(num -> System.out.print(num + "; "));
+		System.out.println();
 	}
 	
 	@Test
