@@ -169,15 +169,6 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 	private Node<T> getNextCurrent(Node<T> current) {
 		return current.right == null ? getGreaterParent(current) : getLeastNode(current.right);
 	}
-	private Node<T> getPrevCurrent(Node<T> current) {
-		return current.left == null ? getLessParent(current) : getGreatestNode(current.right);
-	}
-	private Node<T> getLessParent(Node<T> current) {
-		while (current.parent != null && current == current.parent.left) {
-			current = current.parent;
-		}
-		return current.parent;
-	}
 	private Node<T> getGreaterParent(Node<T> current) {
 		while (current.parent != null && current == current.parent.right) {
 			current = current.parent;
@@ -308,6 +299,16 @@ public class TreeSet<T> extends AbstractCollection<T> implements Sorted<T> {
 		while (current != null) {
 			res[index++] = current;
 			current = getNextCurrent(current);
+		}
+		return res;
+	}
+
+	@Override
+	public T get(T pattern) {
+		Node<T> node = getNode(pattern);
+		T res = null;
+		if (node != null && isEqual(pattern, node.obj)) {
+			res = node.obj;
 		}
 		return res;
 	}
