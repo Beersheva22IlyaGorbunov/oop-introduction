@@ -72,7 +72,7 @@ public abstract class SetTest extends CollectionTest {
 		Arrays.sort(expected);
 		Integer [] actual = collection.toArray(empty);
 		Arrays.sort(actual);
-		
+
 		assertArrayEquals(expected, actual);
 		assertFalse(collection.remove((Integer)134));
 		

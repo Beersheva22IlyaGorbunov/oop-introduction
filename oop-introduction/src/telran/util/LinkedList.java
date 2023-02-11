@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
-	private static class Node<T> {
+	static class Node<T> {
 		T obj;
 		Node<T> prev;
 		Node<T> next;
@@ -75,7 +75,7 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 		return oldSize > size;
 	}
 
-	private void removeNode(Node<T> current) {
+	void removeNode(Node<T> current) {
 		if (current == head) {
 			removeHead();
 		} else if (current == tail) {
@@ -132,7 +132,7 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 		size++;
 	}
 
-	private Node<T> getNode(int index) {	
+	public Node<T> getNode(int index) {	
 		return index < size / 2 ? getNodeFromLeft(index) : getNodeFromRight(index);
 	}
 
@@ -186,6 +186,9 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 	private void removeMiddleElement(Node<T> node) {
 		Node<T> prevNode = node.prev;
 		Node<T> nextNode = node.next;
+		if (nextNode == null) {
+			System.out.println("Pause");
+		}
 		prevNode.next = nextNode;
 		nextNode.prev = prevNode;
 	}

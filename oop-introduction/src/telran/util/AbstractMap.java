@@ -16,18 +16,6 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
-	public V putIfAbsent(K key, V value) {
-		V res = null;
-		Entry<K, V> entry = set.get(new Entry<>(key, null));
-		if (entry != null) {
-			res = entry.getValue();
-		} else {
-			set.add(new Entry<>(key, value));
-		}
-		return res;
-	}
-
-	@Override
 	public V get(K key) {
 		V res = null;
 		Entry<K, V> entry = set.get(new Entry<>(key, null));
@@ -38,42 +26,20 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
-	public V getOrDefault(K key, V value) {
-		V res = null;
-		Entry<K, V> entry = set.get(new Entry<>(key, null));
-		if (entry != null) {
-			res = entry.getValue();
-		} else {
-			res = value;
-		}
-		return res;
-	}
-
-	@Override
 	public boolean containsKey(K key) {
-		Entry<K, V> entry = set.get(new Entry<>(key, null));
-		return entry != null;
+		return set.contains(new Entry<>(key, null));
 	}
 
 	@Override
 	public boolean containsValue(V value) {
-		boolean[] res = {false};
-		set.forEach(elem -> { if (isEqual(value, elem.getValue())) {
-			res[0] = true;
-		}});
-		return res[0];
+		return set.stream().anyMatch(elem -> isEqual(value, elem.getValue()));
 	}
 
 	@Override
 	public Collection<V> values() {
-		try {
-			@SuppressWarnings("unchecked")
-			Collection<V> res = set.getClass().getConstructor().newInstance();
-			set.forEach(elem -> res.add(elem.getValue()));
-			return res;
-		} catch (Exception e) {
-			throw new IllegalStateException();
-		}
+		Collection<V> res = new ArrayList<>();
+		set.forEach(elem -> res.add(elem.getValue()));
+		return res;
 	}
 
 	@Override
@@ -93,7 +59,7 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 		try {
 			@SuppressWarnings("unchecked")
 			Set<Entry<K, V>> res = set.getClass().getConstructor().newInstance();
-			set.forEach(elem -> res.add(elem));
+			set.forEach(res::add);
 			return res;
 		} catch (Exception e) {
 			throw new IllegalStateException();
@@ -102,11 +68,9 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(K key) {
-		V res = null;
-		Entry<K, V> entry = set.get(new Entry<>(key, null));
-		if (entry != null) {
-			res = entry.getValue();
-			set.remove(entry);
+		V res = get(key);
+		if (res != null) {
+			set.remove(new Entry<>(key, null));
 		}
 		return res;
 	}
