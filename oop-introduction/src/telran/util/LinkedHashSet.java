@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Iterator;
 import telran.util.LinkedList.Node;
+import telran.util.Map.Entry;
 
 public class LinkedHashSet<T> extends AbstractCollection<T> implements Set<T> {
 	HashMap<T, Node<T>> map = new HashMap<>();
@@ -32,14 +33,11 @@ public class LinkedHashSet<T> extends AbstractCollection<T> implements Set<T> {
 	@Override
 	public boolean add(T element) {
 		boolean res = false;
-		if (orderList.add(element)) {
-			Node<T> addedNode = orderList.getNode(size());
-			if (map.putIfAbsent(element, addedNode) != null) {
-				orderList.removeNode(addedNode);
-			} else {
-				res = true;
-				size++;
-			}
+		Node<T> newNode = new Node<T>(element);
+		if (map.putIfAbsent(element, newNode) == null) {
+			orderList.addNode(newNode);
+			res = true;
+			size++;
 		}
 		return res;
 	}
@@ -68,8 +66,10 @@ public class LinkedHashSet<T> extends AbstractCollection<T> implements Set<T> {
 
 	@Override
 	public T get(T pattern) {
-		// TODO Auto-generated method stub
-		return null;
+		Entry<T, Node<T>> resEntry = null;
+		Entry<T, Node<T>> entry = new Entry<>(pattern, null);
+		resEntry = map.set.get(entry);
+		return resEntry != null ? resEntry.getKey() : null;
 	}
 
 }

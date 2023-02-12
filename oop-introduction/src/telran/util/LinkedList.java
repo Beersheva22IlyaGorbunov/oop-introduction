@@ -51,15 +51,19 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 	@Override
 	public boolean add(T element) {
 		Node<T> newNode = new Node<T>(element);
+		addNode(newNode);
+		return true;
+	}
+	
+	void addNode(Node<T> newTail) {
 		if (head == null) {
-			head = tail = newNode;
+			head = tail = newTail;
 		} else {
-			tail.next = newNode;
-			newNode.prev = tail;
-			tail = newNode;
+			tail.next = newTail;
+			newTail.prev = tail;
+			tail = newTail;
 		}
 		size++;
-		return true;
 	}
 
 	@Override
