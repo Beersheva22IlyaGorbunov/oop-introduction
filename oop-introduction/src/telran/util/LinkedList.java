@@ -15,7 +15,7 @@ public class LinkedList<T> extends AbstractCollection<T> implements List<T> {
 		}
 	}
 	private Node<T> head;
-	private Node<T> tail;
+			Node<T> tail;
 
 	private class LinkedListIterator implements Iterator<T> {
 		Node<T> current = head;

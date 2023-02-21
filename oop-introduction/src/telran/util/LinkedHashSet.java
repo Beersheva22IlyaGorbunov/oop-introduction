@@ -33,9 +33,9 @@ public class LinkedHashSet<T> extends AbstractCollection<T> implements Set<T> {
 	@Override
 	public boolean add(T element) {
 		boolean res = false;
-		Node<T> newNode = new Node<T>(element);
-		if (map.putIfAbsent(element, newNode) == null) {
-			orderList.addNode(newNode);
+		if (!map.containsKey(element)) {		
+			orderList.add(element);
+			map.put(element, orderList.tail);
 			res = true;
 			size++;
 		}
@@ -66,10 +66,8 @@ public class LinkedHashSet<T> extends AbstractCollection<T> implements Set<T> {
 
 	@Override
 	public T get(T pattern) {
-		Entry<T, Node<T>> resEntry = null;
-		Entry<T, Node<T>> entry = new Entry<>(pattern, null);
-		resEntry = map.set.get(entry);
-		return resEntry != null ? resEntry.getKey() : null;
+		Node<T> node = map.get(pattern);
+		return node != null ? node.obj : null;
 	}
 
 }
